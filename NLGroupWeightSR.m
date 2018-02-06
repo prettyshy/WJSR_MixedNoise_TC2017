@@ -31,9 +31,9 @@ blkNimgMatrixNL=blkNimgMatrixNL-patchNimNLMean;
  PNum=size(blkNimgMatrix,2);
  coefMatrix=zeros(size(D,2),PNum);
  
-  h=waitbar(0,'W-SOMP on each group ...');
+%   h=waitbar(0,'W-SOMP on each group ...');
  for i=1:PNum
-        waitbar(i/PNum);
+%         waitbar(i/PNum);
      X=blkNimgMatrixNL(:,Arr(:,i));
      X=[blkNimgMatrix(:,i),X];   
      
@@ -43,7 +43,7 @@ blkNimgMatrixNL=blkNimgMatrixNL-patchNimNLMean;
      [Coeff]=W_SOMP(D,X,NLweit,par.const*par.sig,10);
      coefMatrix(:,i)=Coeff(:,1); 
  end
-   close(h);
+%    close(h);
  outpTemp=RecoverImage(Nimg,patchNimMean,D,coefMatrix,stp);  
 
  weit=(flagNim.*flagNim)+lambda1;
