@@ -131,6 +131,9 @@ for nSig  =   [10]         % The standard variance of the additive Gaussian nois
                 
                 Lambda=max(sqrt(nSig)/4,Lambda/2);
             end
+            imname = sprintf([write_sRGB_dir '/BWSC_AMF1_GSPIN_nl' num2str(nSig) '_sp' num2str(sp) '_ps' num2str(Par.ps) '_step' num2str(Par.step) '_nini' num2str(Par.nlspini) '_ngap' num2str(Par.nlspgap) '_de' num2str(delta) '_rho' num2str(rho) '_mu' num2str(mu) '_l1_' num2str(lambda1) '_l2_' num2str(lambda2) im_dir(i).name]);
+            imwrite(im_out/255,imname);
+            fprintf('%s : PSNR = %2.4f, SSIM = %2.4f \n',im_dir(i).name, Par.PSNR(Par.Outerloop, Par.image),Par.SSIM(Par.Outerloop, Par.image)     );
         end
         mPSNR=mean(PSNR);
         mSSIM=mean(SSIM);
