@@ -48,8 +48,9 @@ for nSig  =   [10 20 30]         % The standard variance of the additive Gaussia
             
             IMin0=double(IMin0);
             Nimg=double(Nimg1);
-            
-            [PSNRnois, MSEnois] = psnr(double(IMin0),Nimg)
+            % [PSNRnois, MSEnois] = psnr(double(IMin0),Nimg)
+            fprintf('%s :\n',im_dir(i).name);
+            fprintf('The initial value of PSNR = %2.4f, SSIM = %2.4f \n', csnr( Nimg, IMin0, 0, 0 ), cal_ssim( Nimg, IMin0, 0, 0 ));
             
             [AdpMedDenoised,flagDctNImg]           =   adpmedft(Nimg,19);  % for salt & pepper noise
             flagDctImg=flagDctNImg;
@@ -110,9 +111,9 @@ for nSig  =   [10 20 30]         % The standard variance of the additive Gaussia
                 [outpDimg,outpTemp]=NLGroupWeightSR(preDim,refImg,par,dict,flagNim,Lambda,Lambda2);
                 curDim=outpDimg;
                 outpDimg=max(min(outpDimg,255),0);
-                [PSNRdim, MSEdim] = psnr(double(IMin0),outpDimg)
-                [missim_dim, ssim_dim] = ssim_index(double(IMin0),outpDimg);
-                missim_dim
+                % [PSNRdim, MSEdim] = psnr(double(IMin0),outpDimg)
+                % [missim_dim, ssim_dim] = ssim_index(double(IMin0),outpDimg);
+                % missim_dim
                 % figure(8), imshow(uint8(outpDimg));
                 % title('denoised image by weighted simutaneous SR with DCT dictionary and global regularization')
                 
@@ -126,9 +127,7 @@ for nSig  =   [10 20 30]         % The standard variance of the additive Gaussia
                 refImg=outpTemp;
                 [AdpMedDenoised,flagDctImg]           =   adpmedft(outpDimg,19);
                 flagNim=1-flagDctImg;
-                
                 par.sig=max(5,par.sig/2.5);
-                
                 Lambda=max(sqrt(nSig)/4,Lambda/2);
             end
             %% calculate the PSNR
@@ -136,7 +135,7 @@ for nSig  =   [10 20 30]         % The standard variance of the additive Gaussia
             SSIM(i, 1)      =  cal_ssim( outpDimg, IMin0, 0, 0 );
             imname = sprintf([write_sRGB_dir '/' method '_AMF1_GSPIN_nl' num2str(nSig) '_sp' num2str(sp) im_dir(i).name]);
             imwrite(outpDimg/255,imname);
-            fprintf('%s : PSNR = %2.4f, SSIM = %2.4f \n',im_dir(i).name, Par.PSNR(Par.Outerloop, Par.image),Par.SSIM(Par.Outerloop, Par.image)     );
+            fprintf('%s : PSNR = %2.4f, SSIM = %2.4f \n', im_dir(i).name, PSNR(i, 1), SSIM(i, 1) );
         end
         mPSNR=mean(PSNR);
         mSSIM=mean(SSIM);
