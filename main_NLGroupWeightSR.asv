@@ -12,11 +12,11 @@ if ~isdir(write_sRGB_dir)
     mkdir(write_sRGB_dir)
 end
 Type = 0;
-for nSig  =   [10 20 30]         % The standard variance of the additive Gaussian noise;
-    for sp =  [.1 .3 .5]           % salt and pepper
+for nSig  =   [10]         % The standard variance of the additive Gaussian noise;
+    for sp =  [.5 .1]           % salt and pepper
         % record all the results in each iteration
         PSNR = zeros(im_num, 1, 'double');
-        SSIM = zeros(im_num, 1, 'double');
+        SSIM = zeros(1, im_num, 'double');
         T512 = [];
         T256 = [];
         for i = 1:im_num
@@ -132,10 +132,10 @@ for nSig  =   [10 20 30]         % The standard variance of the additive Gaussia
                 Lambda=max(sqrt(nSig)/4,Lambda/2);
             end
             %% calculate the PSNR
-            PSNR(i, 1)  =   csnr( outpDimg, IMin0, 0, 0 );
-            SSIM(i, 1)      =  cal_ssim( outpDimg, IMin0, 0, 0 );
-            imname = sprintf([write_sRGB_dir '/' method '_AMF1_GSPIN_nl' num2str(nSig) '_sp' num2str(sp) im_dir(i).name]);
-            imwrite(outpDimg/255,imname);
+                                    PSNR(Par.Outerloop, Par.image)  =   csnr( im_out, Par.I, 0, 0 );
+                                    Par.SSIM(Par.Outerloop, Par.image)      =  cal_ssim( im_out, Par.I, 0, 0 );
+            imname = sprintf([write_sRGB_dir '/BWSC_AMF1_GSPIN_nl' num2str(nSig) '_sp' num2str(sp) '_ps' num2str(Par.ps) '_step' num2str(Par.step) '_nini' num2str(Par.nlspini) '_ngap' num2str(Par.nlspgap) '_de' num2str(delta) '_rho' num2str(rho) '_mu' num2str(mu) '_l1_' num2str(lambda1) '_l2_' num2str(lambda2) im_dir(i).name]);
+            imwrite(im_out/255,imname);
             fprintf('%s : PSNR = %2.4f, SSIM = %2.4f \n',im_dir(i).name, Par.PSNR(Par.Outerloop, Par.image),Par.SSIM(Par.Outerloop, Par.image)     );
         end
         mPSNR=mean(PSNR);
