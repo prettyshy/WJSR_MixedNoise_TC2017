@@ -7,7 +7,7 @@ im_dir  = dir(fpath);
 im_num = length(im_dir);
 method = 'WJSR';
 write_MAT_dir = ['C:/Users/csjunxu/Desktop/TWSCGIN/'];
-write_sRGB_dir = [write_MAT_dir method];
+write_sRGB_dir = [write_MAT_dir method '/'];
 if ~isdir(write_sRGB_dir)
     mkdir(write_sRGB_dir)
 end
@@ -131,13 +131,13 @@ for nSig  =   [10 20 30]         % The standard variance of the additive Gaussia
             %% calculate the PSNR
             PSNR(i, 1)  =   csnr( outpDimg, IMin0, 0, 0 );
             SSIM(i, 1)      =  cal_ssim( outpDimg, IMin0, 0, 0 );
-            imname = sprintf([write_sRGB_dir '/' method '_AMF1_GSPIN_nl' num2str(nSig) '_sp' num2str(sp) im_dir(i).name]);
+            imname = sprintf([write_sRGB_dir method '_AMF1_GSPIN_nl' num2str(nSig) '_sp' num2str(sp) im_dir(i).name]);
             imwrite(outpDimg/255,imname);
             fprintf('%s : PSNR = %2.4f, SSIM = %2.4f \n', im_dir(i).name, PSNR(i, 1), SSIM(i, 1) );
         end
         mPSNR=mean(PSNR);
         mSSIM=mean(SSIM);
-        name = sprintf([write_MAT_dir '/' method '_AMF1_GSPIN_nl' num2str(nSig) '_sp' num2str(sp) '.mat']);
+        name = sprintf([write_MAT_dir method '_AMF1_GSPIN_nl' num2str(nSig) '_sp' num2str(sp) '.mat']);
         save(name,'nSig','sp','PSNR','SSIM','mPSNR','mSSIM');
     end
 end
