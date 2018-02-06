@@ -1,0 +1,33 @@
+clear
+clc
+% Dimg=imread('SP20_GN10_Propose_barbara.png');
+addpath('QAC')
+Original_image_dir        =    'DenoisedImag';
+fpath                     =   fullfile(Original_image_dir, '*.png'); 
+im_dir                    =   dir(fpath);  
+im_num                    =   length(im_dir);     % the number of images loaded in.
+
+load cluster_center;
+% im =  rgb2gray(imread('img13.bmp'));
+ feature_fun = @compute_DOG;
+ 
+k=1;
+row=0;
+col=0;
+for i = 1:im_num
+    Dimg                =   double( imread(fullfile(Original_image_dir, im_dir(i).name)) ); 
+    Qac = QAC(double(Dimg), cluster_center, feature_fun);
+    if (mod(k,12)==1)
+        row=row+1;
+        col=1;
+    end
+    qac(row,col)=Qac;
+    col=col+1;
+      k=k+1;
+end
+
+xlswrite('QAC.xls',qac);
+ disp( sprintf(' %s ', im_dir(1:12).name) )
+ disp( sprintf(' %s ', im_dir(13:24).name) )
+ disp( sprintf(' %s ', im_dir(25:36).name) )
+ disp( sprintf(' %s ', im_dir(37:48).name) )
