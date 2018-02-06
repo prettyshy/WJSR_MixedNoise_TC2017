@@ -17,8 +17,6 @@ for nSig  =   [10 20 30]         % The standard variance of the additive Gaussia
         % record all the results in each iteration
         PSNR = zeros(im_num, 1, 'double');
         SSIM = zeros(im_num, 1, 'double');
-        T512 = [];
-        T256 = [];
         for i = 1:im_num
             ff2=double( imread(fullfile(Original_image_dir, im_dir(i).name)) );
             S = regexp(im_dir(i).name, '\.', 'split');
