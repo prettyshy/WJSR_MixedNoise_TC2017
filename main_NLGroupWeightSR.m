@@ -12,7 +12,7 @@ if ~isdir(write_sRGB_dir)
     mkdir(write_sRGB_dir)
 end
 Type = 0;
-for nSig  =   [10 20 30]         % The standard variance of the additive Gaussian noise;
+for nSig  =   [20 30]         % The standard variance of the additive Gaussian noise;
     for sp =  [.1 .3 .5]           % salt and pepper
         % record all the results in each iteration
         PSNR = zeros(im_num, 1, 'double');
